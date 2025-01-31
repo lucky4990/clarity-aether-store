@@ -4,6 +4,10 @@ authors = []
 description = ""
 telemetry = false
 requirements = []
+[contracts.aether-reviews]
+path = "contracts/aether-reviews.clar"
+depends_on = []
+
 [contracts.aether-store]
 path = "contracts/aether-store.clar"
 depends_on = []
