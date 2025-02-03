@@ -24,8 +24,24 @@ Clarinet.test({
 });
 
 Clarinet.test({
-  name: "Ensure can purchase a product",
+  name: "Ensure can get product details",
   async fn(chain: Chain, accounts: Map<string, Account>) {
-    // Test implementation
+    const wallet_1 = accounts.get("wallet_1")!;
+    
+    let block = chain.mineBlock([
+      Tx.contractCall("aether-store", "list-product", 
+        [types.ascii("Test Product"), types.utf8("Description"), types.uint(1000)],
+        wallet_1.address
+      )
+    ]);
+    
+    let getProductResult = chain.callReadOnlyFn(
+      "aether-store",
+      "get-product",
+      [types.uint(0)],
+      wallet_1.address
+    );
+    
+    assertEquals(getProductResult.result.expectSome().data.name, "Test Product");
   },
 });
