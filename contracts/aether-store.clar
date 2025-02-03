@@ -5,6 +5,7 @@
 (define-constant err-item-not-found (err u102))
 (define-constant err-already-purchased (err u103))
 (define-constant err-not-seller (err u104))
+(define-constant err-not-buyer (err u105))
 
 ;; Define data structures
 (define-map products
@@ -53,6 +54,16 @@
   )
 )
 
+;; Get product details
+(define-read-only (get-product (product-id uint))
+  (map-get? products { product-id: product-id })
+)
+
+;; Get purchase details
+(define-read-only (get-purchase (product-id uint))
+  (map-get? purchases { product-id: product-id })
+)
+
 ;; Purchase a product
 (define-public (purchase-product (product-id uint))
   (let ((product (unwrap! (map-get? products { product-id: product-id }) err-item-not-found)))
@@ -93,7 +104,7 @@
         )
         (ok true)
       )
-      (err u105)
+      err-not-buyer
     )
   )
 )
